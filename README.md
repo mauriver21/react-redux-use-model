@@ -2,7 +2,7 @@
 
 ## Documentation
 
-**[Documentation is available here.](https://webblocksapp.github.io/react-redux-use-model)**
+**[Documentation is available here.](https://mauriver21.github.io/react-redux-use-model)**
 
 ## Overview
 
@@ -70,7 +70,7 @@ root.render(
 
 ## Quick Start
 
-You can follow [this working example](https://webblocksapp.github.io/react-redux-use-model/#/docs/quick-start).
+You can follow [this working example](https://mauriver21.github.io/react-redux-use-model/#/docs/quick-start).
 
 ## Contributing
 
