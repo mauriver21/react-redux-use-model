@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 import { Provider } from 'react-redux';
 import { ModelProvider } from '@components';
 import { worker } from '@examples/mocks/browser';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { VideosDropdown, VideosList } from '@examples/components';
 
 const meta: Meta<typeof VideosList> = {

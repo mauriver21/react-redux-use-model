@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ProductPaginatedEntitiesList } from '@examples/components';
 
 const meta: Meta<typeof ProductPaginatedEntitiesList> = {
