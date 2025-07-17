@@ -2,7 +2,7 @@ import { QueryKey } from '@examples/constants';
 import { useProductModel } from '@examples/models';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Pagination, ProductItem } from '@examples/components';
+import { ProductItem } from '@examples/components';
 import { PaginationParams } from '@interfaces';
 
 export const ProductList: React.FC = () => {
@@ -56,13 +56,6 @@ export const ProductList: React.FC = () => {
               />
             ))}
           </div>
-          <Pagination
-            page={productQuery?.pagination?.page}
-            count={productQuery?.pagination?.totalPages}
-            onChange={async (page) =>
-              setParams((prev) => ({ ...prev, _page: page }))
-            }
-          />
         </div>
         <pre
           style={{
