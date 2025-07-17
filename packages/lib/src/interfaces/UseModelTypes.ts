@@ -162,13 +162,13 @@ export type ExtractHandler<
 > = Extract<T[StringKey<keyof T>], { action: TEntityActionType }>;
 
 export type NormalizeEntity<T extends AnyObject> = {
-  [K in keyof T]: T[K] extends Array<{ id?: string }>
+  [K in keyof T]: T[K] extends Array<{ id?: Id }>
     ? Array<string>
-    : T[K] extends { id?: string }
+    : T[K] extends { id?: Id }
     ? string
-    : T[K] extends Array<{ id?: string }> | undefined
+    : T[K] extends Array<{ id?: Id }> | undefined
     ? Array<string> | undefined
-    : T[K] extends { id?: string } | undefined
+    : T[K] extends { id?: Id } | undefined
     ? string | undefined
     : T[K];
 };
