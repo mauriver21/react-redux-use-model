@@ -1,6 +1,6 @@
 import { ListResponse as BaseListResponse, Entity } from './interfaces';
 export { ModelProvider } from './components';
-export { EntityActionType } from './constants';
+export { EntityActionType, ListMode } from './constants';
 export { useModel } from './hooks';
 export { useDebounce, useQueryKey } from './utils';
 export { withQueryKey } from './hocs';
