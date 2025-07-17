@@ -1,5 +1,5 @@
 import { QueryKeyContext, QueryKeyContextType } from '@utils';
-import { useRef } from 'react';
+import { useRef, JSX } from 'react';
 
 export const withQueryKey = <T,>(Component: React.FC<T>) => {
   return (props: T & JSX.IntrinsicAttributes) => {
