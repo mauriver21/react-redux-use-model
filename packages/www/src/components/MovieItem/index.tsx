@@ -1,6 +1,6 @@
 import { Id, Pagination } from 'react-redux-use-model';
 import { useSelector } from 'react-redux';
-import { Body1, Box, SkeletonLoader, Stack } from 'reactjs-ui-core';
+import { Body1, Box, SkeletonLoader, Stack } from 'reactjs-shared-ui';
 import { RootState } from '@store';
 import { useMovieModel } from '@models/useMovieModel';
 import { createRandomMovie } from '@mocks/fakers';

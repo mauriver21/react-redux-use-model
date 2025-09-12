@@ -1,13 +1,8 @@
 import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import IconButton from '@mui/material/IconButton';
 import { ChangeEvent, useEffect, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Icon,
-  TextField,
-  TextFieldProps,
-} from 'reactjs-ui-core';
+import { Box, CircularProgress, Icon } from 'reactjs-shared-ui';
+import { TextField, TextFieldProps } from 'reactjs-shared-ui/forms';
 
 export type SearchFieldProps = Omit<TextFieldProps, 'onChange'> & {
   processing?: boolean;

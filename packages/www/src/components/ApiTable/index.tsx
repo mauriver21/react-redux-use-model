@@ -9,6 +9,7 @@ import {
   TableContainerProps,
   TableProps,
 } from '@mui/material';
+import { JSX } from 'react';
 
 type ApiData = {
   columnNames: Array<string>;

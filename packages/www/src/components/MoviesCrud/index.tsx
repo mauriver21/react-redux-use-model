@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, H5, Stack } from 'reactjs-ui-core';
+import { Box, H5, Stack } from 'reactjs-shared-ui';
 import { QueryKey } from '@constants/enums';
 import { useMovieModel } from '@models/useMovieModel';
 import { createRandomMovie } from '@mocks/fakers';

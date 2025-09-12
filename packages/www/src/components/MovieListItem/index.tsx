@@ -4,7 +4,7 @@ import { RootState } from '@store';
 import { useSelector } from 'react-redux';
 import { Id } from 'react-redux-use-model';
 import { TableRow, TableCell } from '@mui/material';
-import { SkeletonLoader, Body1 } from 'reactjs-ui-core';
+import { SkeletonLoader, Body1 } from 'reactjs-shared-ui';
 
 export interface MovieListItemProps {
   id: Id | undefined;

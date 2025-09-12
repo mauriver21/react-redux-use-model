@@ -5,7 +5,7 @@ import {
   ContentsArea,
   ContentsAreaHandle,
   TableOfContents,
-} from 'reactjs-ui-core';
+} from 'reactjs-shared-ui';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Sidebar } from '@components/Sidebar';
 import { MAIN_LAYOUT_MAX_WIDTH, NAV_HEIGHT } from '@constants/constants';

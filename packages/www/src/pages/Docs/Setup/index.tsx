@@ -1,5 +1,6 @@
 import { Body1 } from '@components/Body1';
-import { Box, Code, ContentsClass, H3, H6, Stack } from 'reactjs-ui-core';
+import { Box, ContentsClass, H3, H6, Stack } from 'reactjs-shared-ui';
+import { Code } from 'reactjs-shared-ui/syntax-highlighter';
 
 export const Setup: React.FC = () => {
   return (

@@ -1,5 +1,5 @@
 import { Body1 } from '@components/Body1';
-import { ContentsClass, H3, H6, Stack } from 'reactjs-ui-core';
+import { ContentsClass, H3, H6, Stack } from 'reactjs-shared-ui';
 
 export const Introduction: React.FC = () => {
   return (

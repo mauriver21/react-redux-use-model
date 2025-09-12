@@ -1,5 +1,6 @@
 import { MoviesCrud } from '@components/MoviesCrud';
-import { ContentsClass, H3, Implementation, Stack } from 'reactjs-ui-core';
+import { ContentsClass, H3, Stack } from 'reactjs-shared-ui';
+import { Implementation } from 'reactjs-shared-ui/syntax-highlighter';
 
 export const QuickStart: React.FC = () => {
   return (

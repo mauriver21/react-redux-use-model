@@ -2,14 +2,8 @@ import { ApiTable } from '@components/ApiTable';
 import { Body1 } from '@components/Body1';
 import { MoviesListExample1 } from '@components/MoviesListExample1';
 import { MoviesListExample2 } from '@components/MoviesListExample2';
-import {
-  Code,
-  ContentsClass,
-  H3,
-  H6,
-  Implementation,
-  Stack,
-} from 'reactjs-ui-core';
+import { ContentsClass, H3, H6, Stack } from 'reactjs-shared-ui';
+import { Code, Implementation } from 'reactjs-shared-ui/syntax-highlighter';
 
 export const ListRecords: React.FC = () => {
   return (

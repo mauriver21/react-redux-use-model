@@ -1,6 +1,7 @@
 import React from 'react';
 import { PaginationParams, QueryState } from 'react-redux-use-model';
-import { Body1, Code, Stack } from 'reactjs-ui-core';
+import { Body1, Stack } from 'reactjs-shared-ui';
+import { Code } from 'reactjs-shared-ui/syntax-highlighter';
 
 export interface PaginationStats {
   query: QueryState;

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Button as BaseButton,
   ButtonProps as BaseButtonProps,
-} from 'reactjs-ui-core';
+} from 'reactjs-shared-ui';
 
 export type ButtonProps = BaseButtonProps & {};
 

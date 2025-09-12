@@ -1,6 +1,7 @@
 import { ApiTable } from '@components/ApiTable';
 import { Body1 } from '@components/Body1';
-import { Code, ContentsClass, H3, H6, Stack } from 'reactjs-ui-core';
+import { ContentsClass, H3, H6, Stack } from 'reactjs-shared-ui';
+import { Code } from 'reactjs-shared-ui/syntax-highlighter';
 
 export const Actions: React.FC = () => {
   return (

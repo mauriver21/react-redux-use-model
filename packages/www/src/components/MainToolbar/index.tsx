@@ -1,7 +1,7 @@
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { MAIN_LAYOUT_MAX_WIDTH } from '@constants/constants';
-import { Link, Stack } from 'reactjs-ui-core';
+import { Link, Stack } from 'reactjs-shared-ui';
 import { Body1 } from '@components/Body1';
 
 export interface MainToolbar extends AppBarProps {}

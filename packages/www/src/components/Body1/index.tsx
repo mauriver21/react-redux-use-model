@@ -1,7 +1,7 @@
 import {
   Body1 as BaseBody1,
   Body1Props as BaseBody1Props,
-} from 'reactjs-ui-core';
+} from 'reactjs-shared-ui';
 
 export interface Body1Props extends BaseBody1Props {}
 

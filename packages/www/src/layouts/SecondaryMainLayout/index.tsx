@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { MainToolbar } from '@components/MainToolbar';
-import { Box, ContentsAreaHandle } from 'reactjs-ui-core';
+import { Box, ContentsAreaHandle } from 'reactjs-shared-ui';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Sidebar } from '@components/Sidebar';
 import { MAIN_LAYOUT_MAX_WIDTH, NAV_HEIGHT } from '@constants/constants';

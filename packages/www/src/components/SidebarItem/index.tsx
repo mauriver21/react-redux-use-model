@@ -1,4 +1,4 @@
-import { Body1, MenuItem, MenuItemProps } from 'reactjs-ui-core';
+import { Body1, MenuItem, MenuItemProps } from 'reactjs-shared-ui';
 import { MenuItem as MenuItemType } from '@interfaces/MenuItem';
 import { styles } from './styles';
 import { alpha } from '@mui/material';

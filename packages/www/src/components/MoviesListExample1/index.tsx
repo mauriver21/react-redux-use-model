@@ -11,7 +11,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { Pagination } from '@components/Pagination';
-import { Stack } from 'reactjs-ui-core';
+import { Stack } from 'reactjs-shared-ui';
 import { useMovieModel1 } from '@models/useMovieModel1';
 import { PaginationStats } from '@components/PaginationStats';
 import { MovieListItem } from '@components/MovieListItem';

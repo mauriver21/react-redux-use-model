@@ -1,4 +1,4 @@
-import { Box, BoxProps, MenuList, Stack, StackProps } from 'reactjs-ui-core';
+import { Box, BoxProps, MenuList, Stack, StackProps } from 'reactjs-shared-ui';
 import { SidebarItem } from '@components/SidebarItem';
 import { MenuItem } from '@interfaces/MenuItem';
 
