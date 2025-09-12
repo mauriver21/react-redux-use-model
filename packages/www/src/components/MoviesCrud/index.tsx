@@ -8,28 +8,48 @@ import { Pagination } from '@components/Pagination';
 import { SearchField } from '@components/SearchField';
 import { Button } from '@components/Button';
 import { MovieItem } from '@components/MovieItem';
+import { PaginationParams, useDebounce } from 'react-redux-use-model';
 
 export const MoviesCrud: React.FC = () => {
   const movieModel = useMovieModel();
   const query = useSelector(movieModel.selectPaginatedQuery);
-  const [params, setParams] = useState({ _page: 0, _size: 10, _filter: '' });
+  const [params, setParams] = useState<PaginationParams>({
+    _page: 0,
+    _size: 10,
+    _filter: '',
+  });
 
   const create = () => {
     movieModel.create(createRandomMovie());
   };
 
+  const list = useDebounce((params: Partial<PaginationParams>) => {
+    setParams((prev) => ({ ...prev, ...params }));
+  });
+
   useEffect(() => {
-    movieModel.list({
-      queryKey: QueryKey.MoviesCrud,
-      paginationParams: params,
-    });
+    if (params._filter) {
+      movieModel.list({
+        queryKey: QueryKey.MoviesCrudFiltered,
+        paginationParams: params,
+        invalidateQuery: { strategy: 'onFilterChange' },
+      });
+    } else {
+      movieModel.list({
+        queryKey: QueryKey.MoviesCrud,
+        paginationParams: params,
+      });
+    }
   }, [params]);
 
   return (
     <Stack p={2} spacing={1}>
-      <H5 fontWeight={500}>One Million Movies</H5>
+      <H5 fontWeight={500}>Movies Crud</H5>
       <Box display="grid" gridTemplateColumns="1fr auto" columnGap={1}>
-        <SearchField />
+        <SearchField
+          autoComplete="off"
+          onChange={(value) => list({ _filter: value })}
+        />
         <Button
           sx={{ height: '100%', minWidth: '210px' }}
           color="secondary"
