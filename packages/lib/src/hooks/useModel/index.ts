@@ -30,7 +30,7 @@ import {
   updateQueryListMode,
 } from '@utils';
 import { useApiClients } from '@hooks';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import {
@@ -62,6 +62,7 @@ export const useModel = <
   };
 }) => {
   const queryKey = useQueryKey();
+  const [_, setRefresh] = useState(0);
   const ref = useRef({ queryKey: '', ...queryKey.ref?.current });
   const { handlers, entityName, schema, config } = params;
   const { paginationSizeMultiplier = 5, initialLoadingSize = 10 } =
@@ -100,6 +101,7 @@ export const useModel = <
    */
   const setQueryKey = (queryKey: string) => {
     ref.current.queryKey = queryKey;
+    setRefresh(now());
   };
 
   /**
@@ -312,7 +314,6 @@ export const useModel = <
       setQueryKey(options.queryKey);
 
       const queryKey = getQueryKey();
-      updateQueryListMode({ entityName, queryKey }, options?.mode);
       const foundQuery = findQuery(entityName, queryKey);
 
       const cachedPaginationParams = getCachedPaginationParams(queryKey);
@@ -320,12 +321,16 @@ export const useModel = <
         options.paginationParams._cacheSeconds ||
         cachedPaginationParams?._cacheSeconds ||
         0;
-      const cacheExpired = timestamp > (foundQuery?.cacheTimestamp || 0);
-      console.log({
-        cacheExpired,
-        timestamp,
-        cacheTimestamp: foundQuery?.cacheTimestamp || 0,
-      });
+      const filterChanged =
+        options.paginationParams._filter !== cachedPaginationParams?._filter;
+      const cacheExpired =
+        timestamp > (foundQuery?.cacheTimestamp || 0) || filterChanged;
+
+      if (methodOptions?.withResponse !== true && cacheExpired !== true) {
+        return;
+      }
+
+      updateQueryListMode({ entityName, queryKey }, options?.mode);
 
       /**
        * Query is initialized if no prev query exists.
