@@ -16,4 +16,5 @@ export type QueryState<TEntity extends Entity = Entity, TParams = any> = {
   calculatedPagination?: Pagination;
   currentPage?: number;
   calculatedCurrentPage?: number;
+  cacheTimestamp?: number;
 };

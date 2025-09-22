@@ -62,6 +62,12 @@ export type EntityAction<TEntity extends Entity = Entity> =
       timestamp: number;
     }
   | {
+      type: EntityHelperActionType.INITIALIZE_QUERY_CACHE_TIMESTAMP;
+      entityName: string;
+      queryKey: string;
+      cacheSeconds: number;
+    }
+  | {
       type: EntityHelperActionType.UPDATE_QUERY_LOADERS;
       entityName: string;
       queryKey: string;

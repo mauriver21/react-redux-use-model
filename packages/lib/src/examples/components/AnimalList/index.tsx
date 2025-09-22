@@ -11,6 +11,7 @@ export const AnimalList: React.FC = () => {
   const [params, setParams] = useState<PaginationParams>({
     _page: 0,
     _size: 10,
+    _cacheSeconds: 5,
   });
 
   useEffect(() => {

@@ -315,6 +315,18 @@ export const useModel = <
       updateQueryListMode({ entityName, queryKey }, options?.mode);
       const foundQuery = findQuery(entityName, queryKey);
 
+      const cachedPaginationParams = getCachedPaginationParams(queryKey);
+      const cacheSeconds =
+        options.paginationParams._cacheSeconds ||
+        cachedPaginationParams?._cacheSeconds ||
+        0;
+      const cacheExpired = timestamp > (foundQuery?.cacheTimestamp || 0);
+      console.log({
+        cacheExpired,
+        timestamp,
+        cacheTimestamp: foundQuery?.cacheTimestamp || 0,
+      });
+
       /**
        * Query is initialized if no prev query exists.
        */
@@ -322,10 +334,17 @@ export const useModel = <
         dispatchInitializeQuery({ queryKey, timestamp });
       }
 
-      const cachedPaginationParams = getCachedPaginationParams(queryKey);
+      /**
+       * Cache timestamp is updated
+       */
+      if (cacheSeconds && cacheExpired) {
+        dispatchInitializeQueryCacheTimestamp({ queryKey, cacheSeconds });
+      }
+
       const page = options.paginationParams?._page || 0;
       const size =
         options.paginationParams?._size || cachedPaginationParams?._size || 10;
+
       const sizeMultiplier = paginationSizeMultiplier || 1;
 
       if (queryKey) {
@@ -683,6 +702,20 @@ export const useModel = <
       type: EntityHelperActionType.INITIALIZE_QUERY,
       entityName,
       initialLoadingSize,
+      ...params,
+    });
+  };
+
+  /**
+   * Handles query initialization.
+   */
+  const dispatchInitializeQueryCacheTimestamp = (params: {
+    queryKey: string;
+    cacheSeconds: number;
+  }) => {
+    dispatch({
+      type: EntityHelperActionType.INITIALIZE_QUERY_CACHE_TIMESTAMP,
+      entityName,
       ...params,
     });
   };

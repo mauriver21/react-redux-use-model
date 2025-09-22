@@ -65,6 +65,34 @@ export const initializeQuery = (
   };
 };
 
+export const initializeQueryCacheTimestamp = (
+  entityName: string,
+  queryKey: string,
+  seconds: number,
+  state: NormalizedEntitiesState
+): NormalizedEntitiesState => {
+  const entityState = state[entityName];
+  let now = new Date();
+  const ms = seconds * 1000;
+  let future = new Date(now.getTime() + ms);
+
+  return {
+    ...state,
+    [entityName]: {
+      ...entityState,
+      queries: (entityState?.queries || []).map((query) => {
+        if (query.queryKey == queryKey) {
+          return {
+            ...query,
+            cacheTimestamp: future.getTime(),
+          };
+        }
+        return query;
+      }),
+    },
+  };
+};
+
 export const updateQueryLoaders = (
   entityName: string,
   queryKey: string | undefined,
