@@ -321,13 +321,16 @@ export const useModel = <
         options.paginationParams._cacheSeconds ||
         cachedPaginationParams?._cacheSeconds ||
         0;
-      const filterChanged =
-        options.paginationParams._filter !== cachedPaginationParams?._filter;
-      const cacheExpired =
-        timestamp > (foundQuery?.cacheTimestamp || 0) || filterChanged;
+      const requestParams = [options.paginationParams];
+      const cacheId = JSON.stringify(requestParams);
+      const cache = foundQuery?.cache?.find((item) => item.id == cacheId);
+      const ms = cacheSeconds * 1000;
+      const future = new Date(timestamp + ms);
+      const expirationTimestamp = future.getTime();
+      const cacheExpired = (cache?.expirationTimestamp || 0) <= timestamp;
 
       if (methodOptions?.withResponse !== true && cacheExpired !== true) {
-        return;
+        return cache?.cachedResponse;
       }
 
       updateQueryListMode({ entityName, queryKey }, options?.mode);
@@ -343,7 +346,11 @@ export const useModel = <
        * Cache timestamp is updated
        */
       if (cacheSeconds && cacheExpired) {
-        dispatchInitializeQueryCacheTimestamp({ queryKey, cacheSeconds });
+        dispatchQueryCache({
+          queryKey,
+          expirationTimestamp,
+          requestParams,
+        });
       }
 
       const page = options.paginationParams?._page || 0;
@@ -422,6 +429,15 @@ export const useModel = <
           params,
           sizeMultiplier,
         });
+
+        if (cacheSeconds && cacheExpired) {
+          dispatchQueryCache({
+            queryKey,
+            expirationTimestamp,
+            requestParams,
+            cachedResponse: response,
+          });
+        }
 
         if (methodOptions?.withResponse) {
           return response;
@@ -714,12 +730,14 @@ export const useModel = <
   /**
    * Handles query initialization.
    */
-  const dispatchInitializeQueryCacheTimestamp = (params: {
+  const dispatchQueryCache = (params: {
     queryKey: string;
-    cacheSeconds: number;
+    expirationTimestamp: number;
+    requestParams: Array<any>;
+    cachedResponse?: any;
   }) => {
     dispatch({
-      type: EntityHelperActionType.INITIALIZE_QUERY_CACHE_TIMESTAMP,
+      type: EntityHelperActionType.QUERY_CACHE,
       entityName,
       ...params,
     });

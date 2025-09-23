@@ -10,7 +10,7 @@ import {
   read,
   initializeQuery,
   updateQueryLoaders,
-  initializeQueryCacheTimestamp,
+  queryCache,
 } from './handlers';
 
 const initialState: NormalizedEntitiesState = {};
@@ -72,11 +72,13 @@ export const normalizedEntitiesState = (
         action.timestamp,
         state
       );
-    case EntityHelperActionType.INITIALIZE_QUERY_CACHE_TIMESTAMP:
-      return initializeQueryCacheTimestamp(
+    case EntityHelperActionType.QUERY_CACHE:
+      return queryCache(
         action.entityName,
         action.queryKey,
-        action.cacheSeconds,
+        action.expirationTimestamp,
+        action.requestParams,
+        action.cachedResponse,
         state
       );
     case EntityHelperActionType.UPDATE_QUERY_LOADERS:

@@ -17,6 +17,7 @@ import {
   mergeQueries,
   mergeUniqueIds,
   normalizer,
+  now,
   produceIds,
   updateQueryPagination,
 } from '@utils';
@@ -65,16 +66,17 @@ export const initializeQuery = (
   };
 };
 
-export const initializeQueryCacheTimestamp = (
+export const queryCache = (
   entityName: string,
   queryKey: string,
-  seconds: number,
+  expirationTimestamp: number,
+  requestParams: Array<any>,
+  cachedResponse: any,
   state: NormalizedEntitiesState
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
-  let now = new Date();
-  const ms = seconds * 1000;
-  let future = new Date(now.getTime() + ms);
+  const cacheId = JSON.stringify(requestParams);
+  const currentTimestamp = now();
 
   return {
     ...state,
@@ -82,9 +84,32 @@ export const initializeQueryCacheTimestamp = (
       ...entityState,
       queries: (entityState?.queries || []).map((query) => {
         if (query.queryKey == queryKey) {
+          let cache = query.cache || [];
+          cache = cache.filter(
+            (item) => item.expirationTimestamp > currentTimestamp
+          );
+
+          if (cache?.some((item) => item.id == cacheId)) {
+            cache = cache.map((item) => {
+              if (item.id == cacheId) {
+                return {
+                  ...item,
+                  expirationTimestamp,
+                  cachedResponse,
+                };
+              }
+              return { ...item };
+            });
+          } else {
+            cache = [
+              ...cache,
+              { id: cacheId, expirationTimestamp, cachedResponse },
+            ];
+          }
+
           return {
             ...query,
-            cacheTimestamp: future.getTime(),
+            cache,
           };
         }
         return query;
