@@ -380,13 +380,15 @@ export const useModel = <
 
       try {
         dispatchUpdateQueryLoaders({ queryKey, listing: true });
+        const { _cacheSeconds, ...restPaginationParams } =
+          options.paginationParams;
 
         const response = (await runApi({
           apiName: handlerName,
           throwError: true,
           params: [
             {
-              ...options.paginationParams,
+              ...restPaginationParams,
               _page: calcPage({
                 page,
                 size,
