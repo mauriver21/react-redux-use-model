@@ -526,7 +526,7 @@ export const invalidateQuery = (
               eventName: 'invalidateQuery',
             }),
             calculatedCurrentPage: undefined,
-            calculatedPagination: undefined,
+            calculatedPagination: query.calculatedPagination,
             currentPage: undefined,
             params: undefined,
             hasRecords: Boolean(tempIds.length),
