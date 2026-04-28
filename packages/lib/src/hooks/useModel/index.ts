@@ -50,7 +50,7 @@ import {
 
 export const useModel = <
   TEntity extends Entity,
-  TQueryHandlers extends QueryHandlers<TEntity>
+  TQueryHandlers extends QueryHandlers<TEntity>,
 >(params: {
   handlers: TQueryHandlers;
   entityName: string;
@@ -109,7 +109,7 @@ export const useModel = <
    */
   const isQueryInvalidated = (
     options: InvalidateQueryStrategy | undefined,
-    params: { _filterPrev?: string; _filter?: string; force?: boolean }
+    params: { _filterPrev?: string; _filter?: string; force?: boolean },
   ) => {
     switch (options?.strategy) {
       case 'always':
@@ -238,13 +238,13 @@ export const useModel = <
     for (const key of keys) {
       modelMethods[key] = buildModelMethod(
         key as StringKey<keyof TQueryHandlers>,
-        handlers[key as keyof TQueryHandlers]
+        handlers[key as keyof TQueryHandlers],
       );
 
       modelMethods[`${key}WithResponse`] = buildModelMethod(
         key as StringKey<keyof TQueryHandlers>,
         handlers[key as keyof TQueryHandlers],
-        { withResponse: true }
+        { withResponse: true },
       );
     }
 
@@ -297,7 +297,7 @@ export const useModel = <
   const buildListMethod = (
     handlerName: StringKey<keyof TQueryHandlers>,
     handler: ListQueryHandler<TEntity>,
-    methodOptions?: BuildModelMethodOptions
+    methodOptions?: BuildModelMethodOptions,
   ) => {
     return async (
       ...params: ModelMethodParameters<
@@ -449,8 +449,10 @@ export const useModel = <
       } catch (error) {
         if (methodOptions?.withResponse) {
           throw error;
-        } else {
+        } else if (handler?.onError) {
           handler?.onError?.(error);
+        } else {
+          throw error;
         }
       } finally {
         dispatchUpdateQueryLoaders({
@@ -468,7 +470,7 @@ export const useModel = <
   const buildCreateMethod = (
     handlerName: StringKey<keyof TQueryHandlers>,
     handler: CreateQueryHandler<TEntity>,
-    methodOptions?: BuildModelMethodOptions
+    methodOptions?: BuildModelMethodOptions,
   ) => {
     return async (
       ...params: ModelMethodParameters<
@@ -497,8 +499,10 @@ export const useModel = <
       } catch (error) {
         if (methodOptions?.withResponse) {
           throw error;
-        } else {
+        } else if (handler?.onError) {
           handler?.onError?.(error);
+        } else {
+          throw error;
         }
       } finally {
         dispatchUpdateQueryLoaders({ queryKey, creating: false });
@@ -512,7 +516,7 @@ export const useModel = <
   const buildUpdateMethod = (
     handlerName: StringKey<keyof TQueryHandlers>,
     handler: UpdateQueryHandler<TEntity>,
-    methodOptions?: BuildModelMethodOptions
+    methodOptions?: BuildModelMethodOptions,
   ) => {
     return async (
       ...params: ModelMethodParameters<
@@ -543,8 +547,10 @@ export const useModel = <
       } catch (error) {
         if (methodOptions?.withResponse) {
           throw error;
-        } else {
+        } else if (handler?.onError) {
           handler?.onError?.(error);
+        } else {
+          throw error;
         }
       } finally {
         dispatchUpdateQueryLoaders({ queryKey, updating: false });
@@ -558,7 +564,7 @@ export const useModel = <
   const buildReadMethod = (
     handlerName: StringKey<keyof TQueryHandlers>,
     handler: ReadQueryHandler<TEntity>,
-    methodOptions?: BuildModelMethodOptions
+    methodOptions?: BuildModelMethodOptions,
   ) => {
     return async (
       ...params: ModelMethodParameters<
@@ -588,8 +594,10 @@ export const useModel = <
       } catch (error) {
         if (methodOptions?.withResponse) {
           throw error;
-        } else {
+        } else if (handler?.onError) {
           handler?.onError?.(error);
+        } else {
+          throw error;
         }
       } finally {
         dispatchUpdateQueryLoaders({ queryKey, reading: false });
@@ -603,7 +611,7 @@ export const useModel = <
   const buildRemoveMethod = (
     handlerName: StringKey<keyof TQueryHandlers>,
     handler: RemoveQueryHandler<TEntity>,
-    methodOptions?: BuildModelMethodOptions
+    methodOptions?: BuildModelMethodOptions,
   ) => {
     return async (
       ...params: ModelMethodParameters<
@@ -666,8 +674,10 @@ export const useModel = <
       } catch (error) {
         if (methodOptions?.withResponse) {
           throw error;
-        } else {
+        } else if (handler?.onError) {
           handler?.onError?.(error);
+        } else {
+          throw error;
         }
       } finally {
         dispatchUpdateQueryLoaders({ queryKey, removing: false });
@@ -681,7 +691,7 @@ export const useModel = <
   const buildModelMethod = (
     handlerName: StringKey<keyof TQueryHandlers>,
     handler: QueryHandler<TEntity>,
-    options?: BuildModelMethodOptions
+    options?: BuildModelMethodOptions,
   ) => {
     switch (handler.action) {
       case EntityActionType.LIST:
@@ -760,7 +770,7 @@ export const useModel = <
       return Object.values(state?.byId || {}) as Array<
         NormalizeEntity<TEntity>
       >;
-    }
+    },
   );
 
   /**
@@ -780,7 +790,7 @@ export const useModel = <
       }
 
       return entities;
-    }
+    },
   );
 
   /**
@@ -788,7 +798,7 @@ export const useModel = <
    */
   const buildSelectedEntity = (
     state: NormalizedState | undefined,
-    entityId?: string | number
+    entityId?: string | number,
   ) => {
     entityId = entityId || emptyId();
     const loading = state?.byId?.[entityId] === undefined;
@@ -804,7 +814,7 @@ export const useModel = <
    */
   const selectEntity = createSelector(
     [selectNormalizedEntityState, (_: RootState, id?: string | number) => id],
-    (state, id) => buildSelectedEntity(state, id)
+    (state, id) => buildSelectedEntity(state, id),
   );
 
   /**
@@ -812,7 +822,7 @@ export const useModel = <
    */
   const selectQueries = createSelector(
     [selectNormalizedEntityState],
-    (state) => state?.queries
+    (state) => state?.queries,
   );
 
   /**
@@ -853,7 +863,7 @@ export const useModel = <
           >['apiFn']
         >
       >;
-    }
+    },
   );
 
   /**
