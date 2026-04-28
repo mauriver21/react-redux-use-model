@@ -167,7 +167,7 @@ export const list = (
   queryKey: string | undefined,
   pagination: QueryState['pagination'],
   sizeMultiplier: number | undefined,
-  params: any,
+  paginationParams: QueryState['paginationParams'],
   invalidatedQuery: boolean | undefined,
   state: NormalizedEntitiesState
 ): NormalizedEntitiesState => {
@@ -196,7 +196,7 @@ export const list = (
                 pagination,
                 sizeMultiplier,
                 currentPage,
-                params,
+                paginationParams,
                 invalidatedQuery,
               }),
             }
