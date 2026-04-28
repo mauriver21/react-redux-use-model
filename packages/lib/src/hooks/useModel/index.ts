@@ -35,7 +35,6 @@ import { useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import {
   CreateResponse,
-  ExtractHandler,
   ExtractQueryHandlerApiFnParameters,
   InvalidateQueryStrategy,
   ListResponse,
@@ -272,15 +271,7 @@ export const useModel = <
    */
   const getCachedPaginationParams = (queryKey: string) => {
     const query = findQuery(entityName, queryKey);
-    const params = query?.params as
-      | ModelMethodParameters<
-          TEntity,
-          TQueryHandlers[string],
-          EntityActionType.LIST
-        >
-      | undefined;
-
-    return params?.[0]?.paginationParams;
+    return query?.paginationParams;
   };
 
   /**
@@ -431,7 +422,7 @@ export const useModel = <
               }
             : undefined,
           currentPage: getCurrentPage(queryKey),
-          params,
+          params: options.paginationParams,
           sizeMultiplier,
         });
 
@@ -856,16 +847,7 @@ export const useModel = <
           if (item === null || item === undefined) return emptyId();
           return item;
         }),
-      } as QueryState<
-        TEntity,
-        Parameters<
-          ExtractHandler<
-            TEntity,
-            TQueryHandlers,
-            EntityActionType.LIST
-          >['apiFn']
-        >
-      >;
+      } as QueryState<TEntity>;
     },
   );
 
@@ -873,7 +855,7 @@ export const useModel = <
    * Select pagination params
    */
   const selectPaginationParams = createSelector([selectQuery], (query) => {
-    const paginationParams = query?.params?.[0];
+    const paginationParams = query?.paginationParams;
     return {
       ...paginationParams,
       _size: paginationParams?._size || 10,

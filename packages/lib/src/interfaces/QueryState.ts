@@ -1,6 +1,12 @@
-import { Entity, Pagination } from '@interfaces';
+import { EntityActionType } from '@constants';
+import {
+  Entity,
+  ModelMethodParameters,
+  Pagination,
+  QueryHandlers,
+} from '@interfaces';
 
-export type QueryState<TEntity extends Entity = Entity, TParams = any> = {
+export type QueryState<TEntity extends Entity = Entity> = {
   ids: Array<Exclude<TEntity['id'], undefined>>;
   queryKey: string;
   loading: boolean;
@@ -11,7 +17,11 @@ export type QueryState<TEntity extends Entity = Entity, TParams = any> = {
   removing: boolean;
   hasRecords: boolean;
   timestamp?: number;
-  params?: TParams;
+  paginationParams?: ModelMethodParameters<
+    TEntity,
+    QueryHandlers<TEntity>[string],
+    EntityActionType.LIST
+  >[0]['paginationParams'];
   pagination?: Pagination;
   calculatedPagination?: Pagination;
   currentPage?: number;
