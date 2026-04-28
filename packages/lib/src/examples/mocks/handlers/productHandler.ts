@@ -15,7 +15,7 @@ export const productHandler = [
 
     if (filter) {
       products = products.filter((item) =>
-        objectMatchCriteria(item, filter, ['name'])
+        objectMatchCriteria(item, filter, ['name']),
       );
     }
 
@@ -24,7 +24,7 @@ export const productHandler = [
       page,
     });
 
-    await delay(2000);
+    await delay(200);
 
     return HttpResponse.json(
       {
@@ -37,7 +37,7 @@ export const productHandler = [
           pageNumber: page,
         },
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
   http.post(`${BASE_URL}/products`, async ({ request }) => {

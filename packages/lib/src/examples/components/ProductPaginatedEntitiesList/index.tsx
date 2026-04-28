@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Paginator, ProductItem } from '@examples/components';
 import { PaginationParams, RootState } from '@interfaces';
+import { useDebounce } from '@utils';
 
 export const ProductPaginatedEntitiesList: React.FC = () => {
   const [params, setParams] = useState<PaginationParams>({
@@ -13,18 +14,38 @@ export const ProductPaginatedEntitiesList: React.FC = () => {
   const productModel = useProductModel();
   const productQuery = useSelector(productModel.selectPaginatedQuery);
   const entities = useSelector((state: RootState) =>
-    productModel.selectEntities(state, productQuery.ids)
+    productModel.selectEntities(state, productQuery.ids),
   );
 
-  useEffect(() => {
-    productModel.list({
-      queryKey: QueryKey.ProductPaginatedList,
-      paginationParams: params,
+  const search = useDebounce((criteria: string) => {
+    setParams({
+      _page: 0,
+      _size: 10,
+      _filter: criteria,
     });
+  });
+
+  useEffect(() => {
+    if (params._filter) {
+      productModel.list({
+        queryKey: QueryKey.ProductPaginatedFilteredList,
+        paginationParams: params,
+        invalidateQuery: { strategy: 'onFilterChange' },
+      });
+    } else {
+      productModel.list({
+        queryKey: QueryKey.ProductPaginatedList,
+        paginationParams: params,
+      });
+    }
   }, [params]);
 
   return (
     <div>
+      <input
+        placeholder="Search..."
+        onChange={(event) => search(event.target.value)}
+      />
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div
           style={{
