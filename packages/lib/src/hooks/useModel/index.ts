@@ -375,7 +375,10 @@ export const useModel = <
         options.invalidateQuery.strategy === 'onFilterChange' &&
         isQueryInvalidated(options.invalidateQuery, { force: true })
       ) {
-        dispatchInvalidateQuery({ queryKey, ids: prevQuery?.ids || [] });
+        dispatchInvalidateQuery({
+          queryKey,
+          ids: foundQuery?.ids || prevQuery?.ids || [],
+        });
       }
 
       try {
