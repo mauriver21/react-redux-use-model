@@ -15,6 +15,7 @@ import {
   ReadResponse,
   Entity,
   Id,
+  PaginationParams,
 } from '@interfaces';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import {
@@ -36,7 +37,6 @@ import { v4 as uuid } from 'uuid';
 import {
   CreateResponse,
   ExtractQueryHandlerApiFnParameters,
-  InvalidateQueryStrategy,
   ListResponse,
   ModelMethodParameters,
   ModelSchema,
@@ -103,23 +103,14 @@ export const useModel = <
     setRefresh(now());
   };
 
-  /**
-   * Method for invalidating a query.
-   */
-  const isQueryInvalidated = (
-    options: InvalidateQueryStrategy | undefined,
-    params: { _filterPrev?: string; _filter?: string; force?: boolean },
-  ) => {
-    switch (options?.strategy) {
-      case 'always':
-        return true;
-      case 'onFilterChange':
-        return params._filterPrev !== params._filter || params.force;
-      case 'custom':
-        return options.when();
-      default:
-        return false;
-    }
+  const checkIfPaginationHasChanged = (args: {
+    prevPaginationParams: PaginationParams;
+    paginationParams: PaginationParams;
+  }) => {
+    const { prevPaginationParams, paginationParams } = args;
+    return (
+      JSON.stringify(prevPaginationParams) !== JSON.stringify(paginationParams)
+    );
   };
 
   /**
@@ -359,16 +350,26 @@ export const useModel = <
         });
       }
 
-      if (
-        prevQuery &&
-        prevQueryKey !== queryKey &&
-        options.invalidateQuery &&
-        options.invalidateQuery.strategy === 'onFilterChange' &&
-        isQueryInvalidated(options.invalidateQuery, { force: true })
-      ) {
+      const paginationHasChanged = cachedPaginationParams
+        ? checkIfPaginationHasChanged({
+            paginationParams: options.paginationParams,
+            prevPaginationParams: cachedPaginationParams,
+          })
+        : false;
+
+      let invalidatedQuery = false;
+
+      if (prevQuery && prevQueryKey !== queryKey) {
+        invalidatedQuery = true;
+
+        const firstIdsScenario = paginationHasChanged
+          ? prevQuery?.ids
+          : foundQuery?.ids;
+        const secondIdsScenario = prevQuery?.ids;
+
         dispatchInvalidateQuery({
           queryKey,
-          ids: foundQuery?.ids || prevQuery?.ids || [],
+          ids: firstIdsScenario || secondIdsScenario || [],
         });
       }
 
@@ -400,11 +401,6 @@ export const useModel = <
             EntityActionType.LIST
           >,
         })) as ListResponse<TEntity>;
-
-        const invalidatedQuery = isQueryInvalidated(options?.invalidateQuery, {
-          _filter: options.paginationParams._filter,
-          _filterPrev: cachedPaginationParams?._filter,
-        });
 
         dispatchList({
           entities: response?.data || [],

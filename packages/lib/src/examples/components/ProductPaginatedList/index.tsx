@@ -2,7 +2,7 @@ import { QueryKey } from '@examples/constants';
 import { useProductModel } from '@examples/models';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ProductItem } from '@examples/components';
+import { Paginator, ProductItem } from '@examples/components';
 import { useDebounce, withQueryKey } from 'react-redux-use-model';
 
 export const ProductPaginatedList: React.FC = withQueryKey(() => {
@@ -23,7 +23,6 @@ export const ProductPaginatedList: React.FC = withQueryKey(() => {
       productModel.list({
         queryKey: QueryKey.ProductPaginatedFilteredList,
         paginationParams: params,
-        invalidateQuery: { strategy: 'onFilterChange' },
       });
     } else {
       productModel.list({
@@ -59,6 +58,12 @@ export const ProductPaginatedList: React.FC = withQueryKey(() => {
               />
             ))}
           </div>
+          <Paginator
+            pagination={productQuery?.pagination}
+            onClickPage={(index) => {
+              setParams((prev) => ({ ...prev, _page: index }));
+            }}
+          />
           <pre>
             <code>{JSON.stringify(productQuery?.pagination)}</code>
           </pre>

@@ -215,11 +215,6 @@ export type ExcludeApiFnParametersArg1<
   >
 > = TApiFnParameters extends [infer _, ...infer Rest] ? Rest : never;
 
-export type InvalidateQueryStrategy =
-  | { strategy: 'onFilterChange' }
-  | { strategy: 'always' }
-  | { strategy: 'custom'; when: () => boolean };
-
 export type ModelMethodParameters<
   TEntity extends Entity,
   TQueryHandler extends QueryHandler<TEntity>,
@@ -227,8 +222,7 @@ export type ModelMethodParameters<
 > = TEntityActionType extends EntityActionType.LIST
   ? [
       {
-        queryKey: string;
-        invalidateQuery?: InvalidateQueryStrategy;
+        queryKey: string;        
         mode?: ListMode;
         paginationParams: ExtractApiFnParametersArg1<
           TEntity,

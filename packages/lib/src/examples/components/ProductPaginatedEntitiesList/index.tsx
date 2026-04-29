@@ -30,7 +30,6 @@ export const ProductPaginatedEntitiesList: React.FC = () => {
       productModel.list({
         queryKey: QueryKey.ProductPaginatedFilteredList,
         paginationParams: params,
-        invalidateQuery: { strategy: 'onFilterChange' },
       });
     } else {
       productModel.list({
