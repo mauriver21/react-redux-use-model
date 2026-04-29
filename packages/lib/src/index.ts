@@ -15,7 +15,6 @@ export type {
   CreateResponse,
   CrudQueryHandlers,
   Id,
-  InvalidateQueryStrategy,
   ListQueryHandler,
   NormalizeEntity,
   Pagination,

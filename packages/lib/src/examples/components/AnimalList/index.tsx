@@ -19,7 +19,6 @@ export const AnimalList: React.FC = () => {
       animalModel.list({
         queryKey: QueryKey.FilteredAnimalList,
         paginationParams: params,
-        invalidateQuery: { strategy: 'onFilterChange' },
       });
     } else {
       animalModel.list({

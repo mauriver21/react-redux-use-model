@@ -99,6 +99,7 @@ export const mergeQueries = (args: {
     return [
       ...queries,
       {
+        initialLoading: false,
         queryKey,
         ids: produceIds({
           entityName,

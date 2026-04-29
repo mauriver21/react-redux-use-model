@@ -18,7 +18,6 @@ export const ProductList: React.FC = () => {
       productModel.list({
         queryKey: QueryKey.FilteredProductList,
         paginationParams: params,
-        invalidateQuery: { strategy: 'onFilterChange' },
       });
     } else {
       productModel.list({
