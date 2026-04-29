@@ -16,6 +16,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "6.0",
+    "types": ["jest"],
     "baseUrl": "./",
     "paths": {
       "@apiClients": ["src/apiClients"],
