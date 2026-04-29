@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export type MswContextType = {
   loading: boolean;
@@ -6,3 +6,4 @@ export type MswContextType = {
 };
 
 export const MswContext = createContext<MswContextType | undefined>(undefined);
+export const useMswContext = () => useContext(MswContext);

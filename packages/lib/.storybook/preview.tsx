@@ -1,30 +1,19 @@
 import type { Preview } from '@storybook/react-vite';
 import { Provider } from 'react-redux';
 import { ModelProvider } from '@components';
-import { worker } from '@examples/mocks/browser';
+import { MswProvider } from '@examples/components/MswProvider';
 import { store } from '@examples/store';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const Decorators: React.FC<{ children: React.ReactElement }> = ({
   children,
 }) => {
-  const [loading, setLoading] = useState(true);
-
-  const start = async () => {
-    await worker.start({ onUnhandledRequest: 'bypass' });
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    start();
-  }, []);
-
-  return loading ? (
-    <></>
-  ) : (
-    <Provider store={store}>
-      <ModelProvider store={store}>{children}</ModelProvider>
-    </Provider>
+  return (
+    <MswProvider>
+      <Provider store={store}>
+        <ModelProvider store={store}>{children}</ModelProvider>
+      </Provider>
+    </MswProvider>
   );
 };
 
