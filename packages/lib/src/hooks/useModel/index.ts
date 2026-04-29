@@ -133,8 +133,6 @@ export const useModel = <
    */
   const dispatchUpdateQueryLoaders = (params: {
     queryKey: string;
-    initialLoading?: boolean;
-    loading?: boolean;
     listing?: boolean;
     creating?: boolean;
     updating?: boolean;
@@ -448,9 +446,7 @@ export const useModel = <
       } finally {
         dispatchUpdateQueryLoaders({
           queryKey,
-          initialLoading: false,
           listing: false,
-          loading: false,
         });
       }
     };

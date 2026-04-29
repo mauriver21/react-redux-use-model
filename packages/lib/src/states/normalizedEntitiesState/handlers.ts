@@ -31,7 +31,7 @@ export const initializeQuery = (
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
   const tempIds = Array(initialLoadingSize).fill(null);
-  const hasQueries = Boolean(entityState?.queries?.length);
+  const hasRecords = Boolean(entityState?.byId);
 
   return {
     ...state,
@@ -54,7 +54,7 @@ export const initializeQuery = (
             },
           }),
           timestamp,
-          initialLoading: hasQueries ? false : true,
+          initialLoading: hasRecords ? false : true,
           loading: true,
           listing: false,
           creating: false,
@@ -141,6 +141,15 @@ export const updateQueryLoaders = (
     [entityName]: {
       ...entityState,
       queries: (entityState?.queries || []).map((query) => {
+        const hasRecords = Boolean(entityState?.byId);
+        const loading =
+          loaders.listing ||
+          loaders.creating ||
+          loaders.updating ||
+          loaders.removing ||
+          loaders.reading ||
+          false;
+
         if (
           query.queryKey === queryKey ||
           queryKey === undefined ||
@@ -148,8 +157,8 @@ export const updateQueryLoaders = (
         ) {
           return {
             ...query,
-            initialLoading: loaders.initialLoading ?? query.initialLoading,
-            loading: loaders.loading ?? query.loading,
+            loading,
+            initialLoading: hasRecords ? false : true,
             listing: loaders.listing ?? query.listing,
             creating: loaders.creating ?? query.creating,
             updating: loaders.updating ?? query.updating,
