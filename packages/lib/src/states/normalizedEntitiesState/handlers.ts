@@ -27,10 +27,11 @@ export const initializeQuery = (
   queryKey: string,
   initialLoadingSize: number,
   timestamp: number,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
   const tempIds = Array(initialLoadingSize).fill(null);
+  const hasQueries = Boolean(entityState?.queries?.length);
 
   return {
     ...state,
@@ -53,6 +54,7 @@ export const initializeQuery = (
             },
           }),
           timestamp,
+          initialLoading: hasQueries ? false : true,
           loading: true,
           listing: false,
           creating: false,
@@ -72,7 +74,7 @@ export const queryCache = (
   expirationTimestamp: number,
   requestParams: Array<any>,
   cachedResponse: any,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
   const cacheId = JSON.stringify(requestParams);
@@ -86,7 +88,7 @@ export const queryCache = (
         if (query.queryKey == queryKey) {
           let cache = query.cache || [];
           cache = cache.filter(
-            (item) => item.expirationTimestamp > currentTimestamp
+            (item) => item.expirationTimestamp > currentTimestamp,
           );
 
           if (cache?.some((item) => item.id == cacheId)) {
@@ -122,6 +124,7 @@ export const updateQueryLoaders = (
   entityName: string,
   queryKey: string | undefined,
   loaders: {
+    initialLoading?: boolean;
     loading?: boolean;
     listing?: boolean;
     creating?: boolean;
@@ -129,7 +132,7 @@ export const updateQueryLoaders = (
     removing?: boolean;
     reading?: boolean;
   },
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
 
@@ -145,6 +148,7 @@ export const updateQueryLoaders = (
         ) {
           return {
             ...query,
+            initialLoading: loaders.initialLoading ?? query.initialLoading,
             loading: loaders.loading ?? query.loading,
             listing: loaders.listing ?? query.listing,
             creating: loaders.creating ?? query.creating,
@@ -169,13 +173,13 @@ export const list = (
   sizeMultiplier: number | undefined,
   paginationParams: QueryState['paginationParams'],
   invalidatedQuery: boolean | undefined,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   let updatedState = { ...state };
   const map = mapRelationships(schema?.relationships);
 
   for (const [key, normalizedValue] of Object.entries(
-    normalizer(entities, entityName, map)
+    normalizer(entities, entityName, map),
   )) {
     const { allIds: newIds, ...value } = normalizedValue;
     const entityState = state[key];
@@ -212,13 +216,13 @@ export const create = (
   entityName: string,
   entity: Entity,
   schema: ModelSchema | undefined,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   let updatedState = { ...state };
   const map = mapRelationships(schema?.relationships);
 
   for (const [key, normalizedValue] of Object.entries(
-    normalizer(entity, entityName, map)
+    normalizer(entity, entityName, map),
   )) {
     const { allIds: newIds, ...value } = normalizedValue;
     const entityState = state[key];
@@ -279,13 +283,13 @@ export const update = (
   entity: Entity,
   prevEntity: Entity | undefined,
   schema: ModelSchema | undefined,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   let updatedState = { ...state };
   const map = mapRelationships(schema?.relationships);
 
   for (const [key, normalizedValue] of Object.entries(
-    normalizer(entity, entityName, map)
+    normalizer(entity, entityName, map),
   )) {
     const { allIds: newIds, ...value } = normalizedValue;
     const entityState = state[key];
@@ -327,13 +331,13 @@ export const read = (
   entityName: string,
   entity: Entity,
   schema: ModelSchema | undefined,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   let updatedState = { ...state };
   const map = mapRelationships(schema?.relationships);
 
   for (const [key, normalizedValue] of Object.entries(
-    normalizer(entity, entityName, map)
+    normalizer(entity, entityName, map),
   )) {
     const { allIds: newIds, ...value } = normalizedValue;
     const entityState = state[key];
@@ -365,7 +369,7 @@ export const remove = (
   entityName: string,
   entityId: string | number,
   schema: ModelSchema | undefined,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   let updatedState = { ...state };
   let entity: Entity | undefined;
@@ -435,7 +439,7 @@ export const goToPage = (
   page: number,
   size: number,
   sizeMultiplier: number,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
 
@@ -483,7 +487,7 @@ export const goToPage = (
                     }),
                   }),
                   calculatedPagination,
-                  { replaceWhenEmpty: true }
+                  { replaceWhenEmpty: true },
                 );
               },
             }),
@@ -504,7 +508,7 @@ export const invalidateQuery = (
   queryKey: string,
   ids: Array<string | number>,
   initialLoadingSize: number,
-  state: NormalizedEntitiesState
+  state: NormalizedEntitiesState,
 ): NormalizedEntitiesState => {
   const entityState = state[entityName];
   const tempIds = ids.length ? ids : Array(initialLoadingSize).fill(null);

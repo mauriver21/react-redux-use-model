@@ -73,6 +73,7 @@ export type EntityAction<TEntity extends Entity = Entity> =
       type: EntityHelperActionType.UPDATE_QUERY_LOADERS;
       entityName: string;
       queryKey: string;
+      initialLoading?: boolean;
       loading?: boolean;
       listing?: boolean;
       creating?: boolean;

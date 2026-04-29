@@ -9,7 +9,7 @@ export const ProductPaginatedList: React.FC = withQueryKey(() => {
   const [params, setParams] = useState({ _page: 0, _size: 10, _filter: '' });
   const productModel = useProductModel();
   const productQuery = useSelector(productModel.selectPaginatedQuery);
-  const { ids, hasRecords, pagination } = productQuery;
+  const { ids, hasRecords, initialLoading, pagination } = productQuery;
 
   const search = useDebounce((criteria: string) => {
     setParams({
@@ -49,24 +49,30 @@ export const ProductPaginatedList: React.FC = withQueryKey(() => {
             padding: 10,
           }}
         >
-          <div>
-            {hasRecords
-              ? ids?.map((id, index) => (
-                  <ProductItem
-                    key={id}
-                    index={index}
-                    pagination={pagination}
-                    productId={id}
-                  />
-                ))
-              : 'No records found...'}
-          </div>
-          <Paginator
-            pagination={pagination}
-            onClickPage={(index) => {
-              setParams((prev) => ({ ...prev, _page: index }));
-            }}
-          />
+          {initialLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              <div>
+                {hasRecords
+                  ? ids?.map((id, index) => (
+                      <ProductItem
+                        key={id}
+                        index={index}
+                        pagination={pagination}
+                        productId={id}
+                      />
+                    ))
+                  : 'No records found...'}
+              </div>
+              <Paginator
+                pagination={pagination}
+                onClickPage={(index) => {
+                  setParams((prev) => ({ ...prev, _page: index }));
+                }}
+              />
+            </>
+          )}
           <pre>
             <code>{JSON.stringify(pagination)}</code>
           </pre>

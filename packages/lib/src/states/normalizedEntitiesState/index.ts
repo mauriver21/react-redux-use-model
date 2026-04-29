@@ -17,7 +17,7 @@ const initialState: NormalizedEntitiesState = {};
 
 export const normalizedEntitiesState = (
   state = initialState,
-  action: EntityAction
+  action: EntityAction,
 ) => {
   switch (action.type) {
     case EntityActionType.LIST:
@@ -31,7 +31,7 @@ export const normalizedEntitiesState = (
         action.sizeMultiplier,
         action.params,
         action.invalidatedQuery,
-        state
+        state,
       );
     case EntityActionType.CREATE:
       return create(action.entityName, action.entity, action.schema, state);
@@ -41,7 +41,7 @@ export const normalizedEntitiesState = (
         action.entity,
         action.prevEntity,
         action.schema,
-        state
+        state,
       );
     case EntityActionType.READ:
       return read(action.entityName, action.entity, action.schema, state);
@@ -54,7 +54,7 @@ export const normalizedEntitiesState = (
         action.page,
         action.size,
         action.sizeMultiplier,
-        state
+        state,
       );
     case EntityHelperActionType.INVALIDATE_QUERY:
       return invalidateQuery(
@@ -62,7 +62,7 @@ export const normalizedEntitiesState = (
         action.queryKey,
         action.ids,
         action.initialLoadingSize,
-        state
+        state,
       );
     case EntityHelperActionType.INITIALIZE_QUERY:
       return initializeQuery(
@@ -70,7 +70,7 @@ export const normalizedEntitiesState = (
         action.queryKey,
         action.initialLoadingSize,
         action.timestamp,
-        state
+        state,
       );
     case EntityHelperActionType.QUERY_CACHE:
       return queryCache(
@@ -79,13 +79,14 @@ export const normalizedEntitiesState = (
         action.expirationTimestamp,
         action.requestParams,
         action.cachedResponse,
-        state
+        state,
       );
     case EntityHelperActionType.UPDATE_QUERY_LOADERS:
       return updateQueryLoaders(
         action.entityName,
         action.queryKey,
         {
+          initialLoading: action.initialLoading,
           loading: action.loading,
           listing: action.listing,
           creating: action.creating,
@@ -93,7 +94,7 @@ export const normalizedEntitiesState = (
           removing: action.removing,
           reading: action.reading,
         },
-        state
+        state,
       );
     default:
       return state;

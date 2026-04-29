@@ -9,6 +9,7 @@ import {
 export type QueryState<TEntity extends Entity = Entity> = {
   ids: Array<Exclude<TEntity['id'], undefined>>;
   queryKey: string;
+  initialLoading: boolean;
   loading: boolean;
   listing: boolean;
   creating: boolean;
