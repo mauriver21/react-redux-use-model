@@ -15,7 +15,7 @@ export interface MovieItemProps {
 export const MovieItem: React.FC<MovieItemProps> = ({ movieId }) => {
   const movieModel = useMovieModel();
   const { data: movie, loading } = useSelector((state: RootState) =>
-    movieModel.selectEntity(state, movieId)
+    movieModel.selectEntity(state, movieId),
   );
 
   const update = () => {
@@ -54,10 +54,16 @@ export const MovieItem: React.FC<MovieItemProps> = ({ movieId }) => {
             {movieId}. {movie?.name}
           </Body1>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Button onClick={update}>
+            <Button
+              disabled={movieModel.updateState.isLoading}
+              onClick={update}
+            >
               {movieModel.updateState.isLoading ? 'Updating...' : 'Update'}
             </Button>
-            <Button onClick={remove}>
+            <Button
+              disabled={movieModel.removeState.isLoading}
+              onClick={remove}
+            >
               {movieModel.removeState.isLoading ? 'Removing...' : 'Remove'}
             </Button>
           </Stack>

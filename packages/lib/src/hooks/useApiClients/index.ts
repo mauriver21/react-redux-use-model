@@ -13,7 +13,7 @@ type ApiClientStates<T extends Extend<T>> = {
 
 export const useApiClients = <T extends Extend<T>>(apis: T) => {
   const initialState = useMemo(() => {
-    let result: { [key: string]: ApiClientState<T> } = {};
+    const result: { [key: string]: ApiClientState<T> } = {};
     Object.keys(apis).forEach((key) => {
       result[`${key}State`] = { isLoading: false, error: undefined };
     });
@@ -21,12 +21,12 @@ export const useApiClients = <T extends Extend<T>>(apis: T) => {
   }, []);
 
   const [state, setState] = useState<{ [key: string]: ApiClientState<T> }>(
-    initialState
+    initialState,
   );
 
   const updateState = <K extends keyof T>(
     apiName: StringKey<K>,
-    state: Partial<ApiClientState<T>>
+    state: Partial<ApiClientState<T>>,
   ) => {
     const apiStateName = `${apiName}State`;
     setState((prev) => ({

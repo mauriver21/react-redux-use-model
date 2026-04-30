@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Stack } from 'reactjs-shared-ui';
 
 export interface PaginationProps extends Omit<MuiPaginationProps, 'onChange'> {
-  onChange?: (page: number) => Promise<void>;
+  onChange?: (page: number) => void;
   autoHide?: boolean;
   scrollableAreaId?: string;
   align?: 'center' | 'right' | 'left';

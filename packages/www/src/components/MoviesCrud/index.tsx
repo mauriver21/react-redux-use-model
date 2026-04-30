@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, H5, Stack } from 'reactjs-shared-ui';
 import { QueryKey } from '@constants/enums';
@@ -12,35 +12,30 @@ import { PaginationParams, useDebounce } from 'react-redux-use-model';
 
 export const MoviesCrud: React.FC = () => {
   const movieModel = useMovieModel();
-  const query = useSelector(movieModel.selectPaginatedQuery);
-  const [params, setParams] = useState<PaginationParams>({
-    _page: 0,
-    _size: 10,
-    _filter: '',
-  });
+  const moviePaginatedQuery = useSelector(movieModel.selectPaginatedQuery);
+  const {
+    paginationParams = { _page: 0, _size: 10 },
+    creating,
+    ids,
+    pagination,
+  } = moviePaginatedQuery;
 
   const create = () => {
     movieModel.create(createRandomMovie());
   };
 
-  const list = useDebounce((params: Partial<PaginationParams>) => {
-    setParams((prev) => ({ ...prev, ...params }));
-  });
+  const list = (params: PaginationParams) => {
+    movieModel.list({
+      queryKey: QueryKey.MoviesCrud,
+      paginationParams: params,
+    });
+  };
+
+  const filter = useDebounce(list);
 
   useEffect(() => {
-    if (params._filter) {
-      movieModel.list({
-        queryKey: QueryKey.MoviesCrudFiltered,
-        paginationParams: params,
-        invalidateQuery: { strategy: 'onFilterChange' },
-      });
-    } else {
-      movieModel.list({
-        queryKey: QueryKey.MoviesCrud,
-        paginationParams: params,
-      });
-    }
-  }, [params]);
+    list(paginationParams);
+  }, []);
 
   return (
     <Stack p={2} spacing={1}>
@@ -48,33 +43,35 @@ export const MoviesCrud: React.FC = () => {
       <Box display="grid" gridTemplateColumns="1fr auto" columnGap={1}>
         <SearchField
           autoComplete="off"
-          onChange={(value) => list({ _filter: value })}
+          onChange={(value) =>
+            filter({ ...paginationParams, _page: 0, _filter: value })
+          }
         />
         <Button
           sx={{ height: '100%', minWidth: '210px' }}
           color="secondary"
           onClick={create}
-          disabled={query.creating}
+          disabled={creating}
         >
-          {query.creating ? `Creating Random Movie...` : `Create Random Movie`}
+          {creating ? `Creating Random Movie...` : `Create Random Movie`}
         </Button>
       </Box>
       <Stack spacing={1}>
-        {query?.ids?.map((id, index) => (
+        {ids?.map((id, index) => (
           <MovieItem
             index={index}
             key={id}
             movieId={id}
-            pagination={query?.pagination}
+            pagination={pagination}
           />
         ))}
       </Stack>
       <Pagination
-        page={query?.pagination?.page}
-        count={query?.pagination?.totalPages}
-        onChange={async (page) =>
-          setParams((prev) => ({ ...prev, _page: page }))
-        }
+        page={pagination?.page}
+        count={pagination?.totalPages}
+        onChange={(_page) => {
+          list({ ...paginationParams, _page });
+        }}
       />
     </Stack>
   );
