@@ -17,14 +17,17 @@ export interface MainLayoutProps {
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ menu }) => {
   const contentsAreaRef = useRef<ContentsAreaHandle>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
     contentsAreaRef.current?.refreshTableOfContents();
+    scrollRef.current?.scrollTo({ top: 0 });
   }, [location.pathname]);
 
   return (
     <Box
+      ref={scrollRef}
       height="100%"
       overflow="auto"
       display="grid"
