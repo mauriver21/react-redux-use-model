@@ -72,7 +72,7 @@ export const RemoveRecord: React.FC = () => {
                 type: 'path',
                 codePath: 'models/useMovieModel5/index.ts',
                 name: 'useMovieModel.ts',
-                language: 'ts',
+                language: 'typescript',
                 mapReplace: {
                   useMovieModel5: 'useMovieModel',
                 },
@@ -90,7 +90,7 @@ export const RemoveRecord: React.FC = () => {
                 type: 'path',
                 codePath: 'components/MovieRemoveRow/index.tsx',
                 name: 'MovieRemoveRow.tsx',
-                language: 'tsx',
+                language: 'typescript',
                 mapReplace: {
                   useMovieModel5: 'useMovieModel',
                 },
