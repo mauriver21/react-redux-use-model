@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - packages/www/**
+      - .github/workflows/**
 jobs:
   www-workflow:
     runs-on: ubuntu-latest
@@ -38,3 +39,5 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAGES_TOKEN }}@github.com/${{ github.repository }}.git
       - name: Deploy www
         run: pnpm www:deploy-docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
