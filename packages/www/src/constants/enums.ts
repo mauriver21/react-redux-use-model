@@ -6,4 +6,5 @@ export enum QueryKey {
   MoviesCrud = 'MoviesCrud',
   MoviesListExample1 = 'MoviesListExample1',
   MoviesListExample2 = 'MoviesListExample2',
+  MovieCreateExample1 = 'MovieCreateExample1',
 }

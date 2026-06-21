@@ -23,6 +23,12 @@ export const useMovieModel2 = () => {
       list: {
         apiFn: movieApiClient.list,
         action: EntityActionType.LIST,
+        onSuccess: (response) => {
+          console.log('Movies listed successfully:', response.data);
+        },
+        onError: (error) => {
+          console.error('Failed to list movies:', error);
+        },
       },
     },
   });

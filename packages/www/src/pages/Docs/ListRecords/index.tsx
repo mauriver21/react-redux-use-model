@@ -42,7 +42,6 @@ export const ListRecords: React.FC = () => {
             type="path"
             codePath="code-snippets/model-snippet-2.ts"
             language="typescript"
-            mapReplace={{ '//MORE_CODE': '...' }}
           />
         </Stack>
         <Stack className={ContentsClass.Item} spacing={2}>
@@ -58,7 +57,6 @@ export const ListRecords: React.FC = () => {
             type="path"
             codePath="code-snippets/api-client-snippet-2.ts"
             language="typescript"
-            mapReplace={{ '//MORE_CODE': '...' }}
           />
         </Stack>
         <Stack pt={2} className={ContentsClass.Item} spacing={2}>

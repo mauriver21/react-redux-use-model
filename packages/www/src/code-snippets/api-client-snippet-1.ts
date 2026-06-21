@@ -1,15 +1,11 @@
 //@ts-nocheck
 import axios from 'axios';
-import {
-  ListResponse,
-  PaginationParams,
-  //MORE_CODE
-} from 'react-redux-use-model';
+import { ListResponse, PaginationParams } from 'react-redux-use-model';
 import { Movie } from '@interfaces/Movie';
 
 export const useMovieApiClient = () => {
   const list = async (
-    params: PaginationParams
+    params: PaginationParams,
   ): Promise<ListResponse<Movie>> => {
     const response = await axios.get<ListResponse<Movie>>('/movies', {
       params,
@@ -22,11 +18,8 @@ export const useMovieApiClient = () => {
     return axios.post<Movie>('/movies', entity);
   };
 
-  //MORE_CODE
-
   return {
     list,
     create,
-    //MORE_CODE
   };
 };

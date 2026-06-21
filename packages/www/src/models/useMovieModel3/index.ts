@@ -1,18 +1,14 @@
-//@ts-nocheck
+import { EntityName } from '@constants/enums';
+import { useMovieApiClient } from '@api-clients/useMovieApiClient';
 import {
   useModel,
   EntityActionType,
-  ListQueryHandler,
   CreateQueryHandler,
+  ListQueryHandler,
 } from 'react-redux-use-model';
 import { Movie } from '@interfaces/Movie';
-import { useMovieApiClient } from '@api-clients/useMovieApiClient';
 
-export enum EntityName {
-  Movies = 'Movies', //Unique entity name of the model
-}
-
-export const useMovieModel = () => {
+export const useMovieModel3 = () => {
   const movieApiClient = useMovieApiClient();
   const model = useModel<
     Movie,
@@ -22,17 +18,26 @@ export const useMovieModel = () => {
     }
   >({
     entityName: EntityName.Movies,
-    config: {
-      paginationSizeMultiplier: 5,
-    },
     handlers: {
       list: {
         apiFn: movieApiClient.list,
         action: EntityActionType.LIST,
+        onSuccess: (response) => {
+          console.log('Movies listed successfully:', response.data);
+        },
+        onError: (error) => {
+          console.error('Failed to list movies:', error);
+        },
       },
       create: {
         action: EntityActionType.CREATE,
         apiFn: movieApiClient.create,
+        onSuccess: (response) => {
+          console.log('Movie created successfully:', response.data);
+        },
+        onError: (error) => {
+          console.error('Failed to create movie:', error);
+        },
       },
     },
   });

@@ -11,20 +11,25 @@ import {
   TableRow,
 } from '@mui/material';
 import { Pagination } from '@components/Pagination';
+import { Button } from '@components/Button';
 import { Stack } from 'reactjs-shared-ui';
-import { useMovieModel1 } from '@models/useMovieModel1';
-import { PaginationStats } from '@components/PaginationStats';
+import { useMovieModel3 } from '@models/useMovieModel3';
 import { MovieListItem } from '@components/MovieListItem';
+import { createRandomMovie } from '@mocks/fakers';
 import { PaginationParams } from 'react-redux-use-model';
 
-export const MoviesListExample1: React.FC = () => {
-  const movieModel = useMovieModel1();
+export const MovieCreateExample1: React.FC = () => {
+  const movieModel = useMovieModel3();
   const query = useSelector(movieModel.selectPaginatedQuery);
-  const { paginationParams = { _page: 0, _size: 10 }, ids, pagination } = query;
+  const { paginationParams = { _page: 0, _size: 10 }, creating, ids } = query;
+
+  const create = () => {
+    movieModel.create(createRandomMovie());
+  };
 
   const list = (params: PaginationParams) => {
     movieModel.list({
-      queryKey: QueryKey.MoviesListExample1,
+      queryKey: QueryKey.MovieCreateExample1,
       paginationParams: params,
     });
   };
@@ -34,7 +39,17 @@ export const MoviesListExample1: React.FC = () => {
   }, []);
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
+      {/* Creation form */}
+      <Stack pt={2}>
+        <Button
+          sx={{ height: '40px', minWidth: '150px' }}
+          onClick={create}
+          disabled={creating}
+        >
+          {creating ? 'Creating...' : 'Create Movie'}
+        </Button>
+      </Stack>
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
@@ -49,14 +64,13 @@ export const MoviesListExample1: React.FC = () => {
           </TableBody>
         </Table>
         <Pagination
-          page={pagination?.page}
-          count={pagination?.totalPages}
+          page={query?.pagination?.page}
+          count={query?.pagination?.totalPages}
           onChange={(_page) => {
             list({ ...paginationParams, _page });
           }}
         />
       </TableContainer>
-      <PaginationStats query={query} params={paginationParams} />
     </Stack>
   );
 };

@@ -33,10 +33,10 @@ export const DOCS_MENU: MenuItem[] = [
   //   text: () => 'Read a Record',
   //   route: '/docs/read-record',
   // },
-  // {
-  //   text: () => 'Create a Record',
-  //   route: '/docs/create-record',
-  // },
+  {
+    text: () => 'Create a Record',
+    route: '/docs/create-record',
+  },
   // {
   //   text: () => 'Update a Record',
   //   route: '/docs/update-record',

@@ -1,5 +1,6 @@
 //@ts-nocheck
 import { ListQueryHandler, useModel } from 'react-redux-use-model';
+import { EntityName } from '@constants/enums';
 
 const useMovieModel = () => {
   const movieApiClient = useMovieApiClient();
@@ -7,7 +8,6 @@ const useMovieModel = () => {
     Movie,
     {
       list: ListQueryHandler<Movie>;
-      //MORE_CODE
     }
   >({
     entityName: EntityName.Movies,
@@ -18,10 +18,13 @@ const useMovieModel = () => {
       list: {
         apiFn: movieApiClient.list,
         action: EntityActionType.LIST,
+        onSuccess: (response) => {
+          console.log('Movie created successfully:', response.data);
+        },
+        onError: (error) => {
+          console.error('Failed to create movie:', error);
+        },
       },
-      //MORE_CODE
     },
   });
-
-  //MORE_CODE
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { QueryKey } from '@constants/enums';
 import {
@@ -15,18 +15,23 @@ import { Stack } from 'reactjs-shared-ui';
 import { useMovieModel2 } from '@models/useMovieModel2';
 import { PaginationStats } from '@components/PaginationStats';
 import { MovieListItem } from '@components/MovieListItem';
+import { PaginationParams } from 'react-redux-use-model';
 
 export const MoviesListExample2: React.FC = () => {
   const movieModel = useMovieModel2();
   const query = useSelector(movieModel.selectPaginatedQuery);
-  const [params, setParams] = useState({ _page: 0, _size: 10, _filter: '' });
+  const { paginationParams = { _page: 0, _size: 10 }, ids, pagination } = query;
 
-  useEffect(() => {
+  const list = (params: PaginationParams) => {
     movieModel.list({
       queryKey: QueryKey.MoviesListExample2,
       paginationParams: params,
     });
-  }, [params]);
+  };
+
+  useEffect(() => {
+    list(paginationParams);
+  }, []);
 
   return (
     <Stack spacing={1}>
@@ -38,20 +43,20 @@ export const MoviesListExample2: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {query?.ids?.map((id) => (
+            {ids?.map((id) => (
               <MovieListItem key={id} id={id} />
             ))}
           </TableBody>
         </Table>
         <Pagination
-          page={query?.pagination?.page}
-          count={query?.pagination?.totalPages}
-          onChange={async (page) =>
-            setParams((prev) => ({ ...prev, _page: page }))
-          }
+          page={pagination?.page}
+          count={pagination?.totalPages}
+          onChange={(_page) => {
+            list({ ...paginationParams, _page });
+          }}
         />
       </TableContainer>
-      <PaginationStats query={query} params={params} />
+      <PaginationStats query={query} params={paginationParams} />
     </Stack>
   );
 };
