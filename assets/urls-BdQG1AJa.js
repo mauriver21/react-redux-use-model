@@ -1,1 +1,0 @@
-const n="import { getOrigin } from '@utils/getOrigin';\n\nexport const BASE_URL = process.env.VITE_BASE_URL;\nexport const ORIGIN_URL = getOrigin();\nexport const WORKER_URL = `${ORIGIN_URL}${\n  BASE_URL ? `/${BASE_URL}` : ''\n}/mockServiceWorker.js`;\n";export{n as default};
