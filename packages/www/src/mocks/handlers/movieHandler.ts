@@ -36,7 +36,7 @@ export const movieHandler = [
           totalPages,
         },
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
   // Create
@@ -66,7 +66,7 @@ export const movieHandler = [
   // Update
   http.put(`${BASE_LOCAL_URL}/movies/:id`, async ({ request, params }) => {
     const { id } = params;
-    let updatedMovie = data.movies.find((item) => item.id === id) as Movie;
+    let updatedMovie = data.movies.find((item) => item.id == id) as Movie;
 
     if (updatedMovie) {
       updatedMovie = {
@@ -74,7 +74,7 @@ export const movieHandler = [
         ...((await request.json()) as Movie),
       };
       data.movies = data.movies.map((item) =>
-        item.id === id ? updatedMovie : item
+        item.id === id ? updatedMovie : item,
       );
       await delay(2000);
       return HttpResponse.json(updatedMovie, { status: 200 });

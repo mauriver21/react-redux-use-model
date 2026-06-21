@@ -37,10 +37,10 @@ export const DOCS_MENU: MenuItem[] = [
     text: () => 'Create a Record',
     route: '/docs/create-record',
   },
-  // {
-  //   text: () => 'Update a Record',
-  //   route: '/docs/update-record',
-  // },
+  {
+    text: () => 'Update a Record',
+    route: '/docs/update-record',
+  },
   // {
   //   text: () => 'Remove a Record',
   //   route: '/docs/remove-record',

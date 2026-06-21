@@ -53,8 +53,7 @@ export const CreateRecord: React.FC = () => {
           <Body1>
             The API function takes the entity payload as its first argument and
             optional additional parameters. It must return a promise of type{' '}
-            <code>CreateResponse&lt;T&gt;</code>, which wraps the created record
-            in a <code>data</code> field.
+            <code>CreateResponse&lt;T&gt;</code>.
           </Body1>
           <Code
             type="path"
